@@ -1,5 +1,6 @@
 require "src.config.Levels"
 require "src.ui.GameOverlay"
+require "src.ui.GameBackdrop"
 require "src.Player"
 require "src.Block"
 require "src.Ball"
@@ -40,7 +41,7 @@ function Game.load (args)
   ball = Ball()
 
   levelManager = LevelManager()
-  levelManager:setupLevel(levels[gamestate.currentLevel])
+  levelManager:setupLevel()
 
   --== Camera
   screenW, screenH = love.graphics.getDimensions()
@@ -51,10 +52,14 @@ function Game.load (args)
 
 
   ui = GameOverlay()
+  bg = GameBackdrop()
 end
 
 
 function Game.update (dt)
+  levelManager:update(dt)
+  bg:update(dt)
+  
   screen:update(dt)
   ball:update(dt)
   player:update(dt)
@@ -92,6 +97,7 @@ function Game.draw()
 
     camera:attach()
 
+      bg:draw()
       player:draw()
       ball:draw()
 
@@ -102,7 +108,7 @@ function Game.draw()
     camera:detach()
 
   end)
-  
+
   ui:draw(gamestate)
 end
 

@@ -11,6 +11,11 @@ function Block:initialize(x, y, health)
   world:add(self, self.x, self.y, self.width, self.height)
 end
 
+function Block:moveX(pos)
+  self.x = pos
+  world:update(self, self.x, self.y)
+end
+
 
 function Block:hit()
   if self.health > 1 then

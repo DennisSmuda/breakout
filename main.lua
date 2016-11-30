@@ -32,19 +32,20 @@ blockhit_sound:setVolume(0.3)
 envhit_sound:setVolume(0.3)
 ballOOB_sound:setVolume(0.3)
 
---== Screen Dimension Globals
-windowW, windowH = love.graphics.getDimensions()
-
+  --== Screen Dimension Globals
+  windowW, windowH = love.graphics.getDimensions()
 
 function love.load()
+  if arg[#arg] == "-debug" then require("mobdebug").start() end -- Debug code for ZeroBrane
+  love.window.setMode(1000, 600, {fullscreen=false, vsync=true, resizable=false})
+
   love.graphics.setBackgroundColor(Colors.darkbrown)
   font = love.graphics.newFont("assets/fonts/slkscr.ttf", 40)
   love.graphics.setFont(font)
 
-
-  if arg[#arg] == "-debug" then require("mobdebug").start() end -- Debug code for ZeroBrane
-  love.window.setMode(1000, 600, {fullscreen=false, vsync=true, resizable=false})
   state:switch("src.states.Game" ,{})
+  windowW, windowH = love.graphics.getDimensions()
+
 end
 
 function love.update(dt)
