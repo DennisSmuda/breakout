@@ -5,23 +5,13 @@ require "src.Block"
 require "src.Ball"
 require "src.Wall"
 require "src.Block"
+require "src.LevelManager"
 
-
-blocks = {}
-
-function setupLevel(level)
-  for i,row in ipairs(level) do
-    for j,blocktype in ipairs(row) do
-      if blocktype > 0 then
-        local block = Block(100 * j, 50 + 35 * i, blocktype)
-        table.insert(blocks, block)
-      end
-    end
-  end
-end
 
 local Game = state:new()
 
+--== Globals
+blocks = {}
 gamestate = {
   lives = 3,
   currentLevel = 1,
@@ -39,40 +29,51 @@ function Game.load (args)
   vignette.parameters = {radius = 0.7, opacity = 0.2}
   post_effect = vignette:chain(scanlines):chain(grain)
 
+
   --== Setup Game World
   world     = bump.newWorld(20)
   leftWall  = Wall(-1, 0, 1, 600)
   rightWall = Wall(1000, 0, 1, 600)
   topWall   = Wall(0, 0, 1000, 1)
   -- botWall   = Wall(0, 600, 1000, 1) -- For testing
-
   player = Player()
   ball = Ball()
 
-  setupLevel(levels[gamestate.currentLevel])
+  levelManager = LevelManager()
+  levelManager:setupLevel(levels[gamestate.currentLevel])
+
+  --== Camera
+  screenW, screenH = love.graphics.getDimensions()
+  camera = Camera(player.x, player.y - 300)
+
+  local dx, dy = screenW - camera.x, screenH - camera.y
+  camera:lookAt(screenW/2, screenH/2)
+
 
   ui = GameOverlay()
-
 end
+
 
 function Game.update (dt)
   screen:update(dt)
   ball:update(dt)
   player:update(dt)
+  ui:update(dt)
 
   if #blocks > 0 then
     updateBlocks()
   else
     win()
   end
-
 end
+
 
 function win(args)
   ball:reset()
   gamestate.levelComplete = true
   gamestate.waitingToStart = true
 end
+
 
 function updateBlocks()
   for i,block in ipairs(blocks) do
@@ -83,19 +84,26 @@ function updateBlocks()
   end
 end
 
+
 function Game.draw()
   screen:apply()
 
   post_effect:draw(function()
-    player:draw()
-    ball:draw()
 
-    for i,block in ipairs(blocks) do
-      block:draw()
-    end
+    camera:attach()
+
+      player:draw()
+      ball:draw()
+
+      for i,block in ipairs(blocks) do
+        block:draw()
+      end
+
+    camera:detach()
 
   end)
-    ui:draw(gamestate)
+  
+  ui:draw(gamestate)
 end
 
 

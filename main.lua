@@ -1,6 +1,7 @@
 --=====================--
 --== Libraries ========--
 --=====================--
+class   = require "lib.middleclass" -- Classes
 push    = require "lib.push"    -- Resolution Handling
 screen  = require "lib.shack"   -- Screen effects (shake, rotate, shear, scale)
 lem     = require "lib.lem"     -- Events
@@ -9,12 +10,12 @@ state   = require "lib.stager"  -- Scenes and transitions
 audio   = require "lib.wave"    -- Audio
 trail   = require "lib.trail"   -- Trails
 soft    = require "lib.soft"    -- Lerp
-ease    = require "lib.easy"    -- Easing
+tween   = require "lib.tween"    -- Easing
 shine   = require "lib.shine"   -- PostProcessing
-class   = require "lib.middleclass" -- Classes
 bump    = require "lib.bump"    -- Collision
+Camera  = require "lib.camera"  -- Camera
+Signal  = require "lib.signal"  -- Eventing
 -- anim8   = require "lib.anim8"   -- Anim
-Signal  = require "lib.signal"
 
 --==
 Colors = require "src.config.Colors"
@@ -25,6 +26,12 @@ blockbreak_sound = audio:newSource("assets/sounds/block_break.wav", "static"):se
 blockhit_sound   = audio:newSource("assets/sounds/block_hit.wav", "static"):setVolume(0.5)
 envhit_sound     = audio:newSource("assets/sounds/environment_hit.wav", "static"):setVolume(0.5)
 ballOOB_sound    = audio:newSource("assets/sounds/ball_oob.wav", "static"):setVolume(0.5)
+
+blockbreak_sound:setVolume(0.3)
+blockhit_sound:setVolume(0.3)
+envhit_sound:setVolume(0.3)
+ballOOB_sound:setVolume(0.3)
+
 --== Screen Dimension Globals
 windowW, windowH = love.graphics.getDimensions()
 

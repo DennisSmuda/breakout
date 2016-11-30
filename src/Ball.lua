@@ -24,7 +24,9 @@ end
 
 function Ball:reset()
   self.x = player.x + player.width/2
+  self.y = player.y - 50
   self.y = 500
+  world:update(self, self.x, self.y)
   self.xVel = 0
   self.yVel = 0
 end
@@ -43,6 +45,11 @@ ballFilter = function(item, other)
 end
 
 function Ball:update(dt)
+  if (gamestate.waitingToStart) then
+    self:reset()
+  end
+
+
   local goalX, goalY = self.x + self.xVel*self.speed*dt, self.y + self.yVel*self.speed*dt
   local actualX, actualY, cols, len = world:move(self, goalX, goalY)
   self.x, self.y = actualX, actualY
