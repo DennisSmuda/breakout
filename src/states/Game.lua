@@ -28,7 +28,7 @@ function Game.load (args)
   scanlines.parameters = {pixel_size = 3, opacity = 0.2 }
   local vignette  = shine.vignette()
   vignette.parameters = {radius = 0.7, opacity = 0.2}
-  post_effect = vignette:chain(scanlines):chain(grain)
+  post_effect = scanlines:chain(grain):chain(vignette)
 
 
   --== Setup Game World
@@ -59,7 +59,7 @@ end
 function Game.update (dt)
   levelManager:update(dt)
   bg:update(dt)
-  
+
   screen:update(dt)
   ball:update(dt)
   player:update(dt)
@@ -74,9 +74,17 @@ end
 
 
 function win(args)
+  gamestate.currentLevel = gamestate.currentLevel+1
+  if gamestate.currentLevel > #levels then
+    -- Win Game
+    state:switch("src.states.Highscore")
+    return
+  end
+
   ball:reset()
   gamestate.levelComplete = true
   gamestate.waitingToStart = true
+  levelManager:newLevel()
 end
 
 

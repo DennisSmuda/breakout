@@ -8,6 +8,10 @@ function Block:initialize(x, y, health)
   self.x = x
   self.y = y
   self.health = health
+
+  if self.health == 0 then
+    self.isEmpty = true;
+  end
   world:add(self, self.x, self.y, self.width, self.height)
 end
 
@@ -40,6 +44,8 @@ function Block:draw()
     love.graphics.setColor(Colors.orange)
   elseif self.health == 1 then
     love.graphics.setColor(Colors.red)
+  elseif self.health == 0 then
+    love.graphics.setColor(0, 0, 0, 0)
   end
   love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end

@@ -27,7 +27,7 @@ function Ball:reset()
   self.y = player.y - 50
   self.y = 500
   world:update(self, self.x, self.y)
-  self.xVel = 0
+  self.xVel = player.xVel
   self.yVel = 0
 end
 
@@ -81,6 +81,8 @@ end
 --== All Basic normal vector 'inversions'
 --== Player can influence the ball's xVelocity
 function Ball:handleCollision(col)
+  if col.other.isEmpty then return end
+
     if col.other.type == 'block' then
       local block = col.other
       block:hit()

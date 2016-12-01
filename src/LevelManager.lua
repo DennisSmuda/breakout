@@ -6,9 +6,7 @@ LevelManager = class('LevelManager')
 
 function LevelManager:initialize()
   self.blockPositions = {x=-windowW*2, y=0}
-  self.blockTween = tween.new(6, self.blockPositions, {x=0}, 'outExpo')
-
-
+  self.blockTween = tween.new(1, self.blockPositions, {x=0}, 'outExpo')
 
 end
 
@@ -25,14 +23,20 @@ function LevelManager:update(dt)
 
 end
 
+function LevelManager:newLevel()
+  self:setupLevel()
+
+  self.blockTween:reset()
+end
+
 
 function LevelManager:setupLevel()
   level = (levels[gamestate.currentLevel])
   for i,row in ipairs(level) do
-    for j,blocktype in ipairs(row) do
+    for j,bHealth in ipairs(row) do
       -- print("Block: " .. j .. ',' .. i .. ": " .. blocktype)
-      if blocktype > 0 then
-        local block = Block((100*j)-windowW*2, (50 + 35 * i), blocktype)
+      if bHealth > 0 then
+        local block = Block((100*j)-windowW*2, (50 + 35 * i), bHealth)
         table.insert(blocks, block)
       end
     end

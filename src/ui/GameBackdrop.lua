@@ -3,8 +3,9 @@ GameBackdrop = class('GameBackdrop')
 
 
 function GameBackdrop:initialize()
+
   self.particles = {}
-  self.size = 50
+  self.size = 150
   self.speed = 10
   windowW, windowH = love.graphics.getDimensions()
 
@@ -16,8 +17,8 @@ function GameBackdrop:initialize()
     }
   end
 
-
 end
+
 
 function GameBackdrop:update(dt)
 
@@ -34,6 +35,7 @@ function GameBackdrop:update(dt)
     end
     if p.y > windowH then
       p.y = -1
+      p.x = love.math.random(1, windowW)
     end
   end
 
@@ -41,10 +43,10 @@ end
 
 
 function GameBackdrop:draw()
-
   love.graphics.setColor(Colors.orange)
+
   for i,p in ipairs(self.particles) do
-    love.graphics.circle("fill", p.x, p.y, 2)
+    love.graphics.circle("fill", p.x, p.y, 1)
   end
 
 end
