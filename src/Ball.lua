@@ -103,7 +103,7 @@ function Ball:handleCollision(col)
       local diff =  self.x - playerMiddle
       -- Player can influence the ball-reflection based on where
       -- the ball hits the paddle, and how fast the paddle is going
-      self.xVel = self.xVel + diff/10
+      self.xVel = self.xVel + diff/7
       -- self.xVel = self.xVel + player.xVel/10
     end
 

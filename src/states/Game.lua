@@ -15,7 +15,7 @@ local Game = state:new()
 blocks = {}
 gamestate = {
   lives = 3,
-  currentLevel = 1,
+  currentLevel = 6,
   points = 0,
   waitingToStart = true
 }
@@ -115,9 +115,10 @@ function Game.draw()
 
     camera:detach()
 
+    ui:draw(gamestate)
+
   end)
 
-  ui:draw(gamestate)
 end
 
 
